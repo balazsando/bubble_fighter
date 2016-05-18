@@ -1,9 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import curses
 
-def main(startscr):
-    field = curses.newwin(5, 5, 0, 0)
+screen = curses.initscr()
+curses.noecho()
+curses.curs_set(0)
+screen.keypad(1)
 
-    game_over = 'Game Over!'
-    win.addstr(curses.LINES // 2, (curses.COLS - len(game_over)) // 2, game_over)
+screen.addstr("This is a Sample Curses Script\n\n")
+while True:
+   event = screen.getch()
+   if event == ord("q"): break
 
-curses.wrapper(main)
+curses.endwin()
