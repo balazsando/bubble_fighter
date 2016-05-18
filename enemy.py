@@ -12,6 +12,7 @@ curses.noecho()
 curses.curs_set(0)
 screen.keypad(1)
 
+
 boxes = []
 
 def box_move():
@@ -25,6 +26,8 @@ def box_move():
             box.box()
             box.addstr(1, 1, i[2])
             box.refresh()
+            if i[1] == 20:        #add here LINES coordinate
+                print("TT")       #add box reach end
         sleep(0.2)
 
 for i in range(8):
