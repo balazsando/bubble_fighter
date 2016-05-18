@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import curses
@@ -22,7 +22,8 @@ box1.addstr(1, 1, text)
 box1.refresh()
 
 for i in range(10) :
-
+    box1 = curses.newwin(10, len(text)+2, i, i)
+    box1.border(0)
     box1.addstr(1, 1, str(i))
     box1.refresh()
     screen.refresh()
