@@ -14,16 +14,28 @@ screen.keypad(1)
 
 boxes = []
 
+def box_move():
+    for j in range (1,5):
+        for i in boxes:
+            box = curses.newwin(3, len(text)+2, 3*j, i[0])
+            box.box()
+            box.addstr(1, 1, i[1])
+            screen.refresh()
+            box.refresh()
+        sleep(0.2)
+
 for i in range(5):
     text = "aaa"
     x_pos = random.randrange(1, 74)
-    box1 = curses.newwin(3, len(text)+2, 0, x_pos)
-    box1.box()
-    box1.addstr(1, 1, text)
+    box = curses.newwin(3, len(text)+2, 0, x_pos)
+    box.box()
+    box.addstr(1, 1, text)
+    boxes.append([x_pos, text])
     screen.refresh()
-    box1.refresh()
-    sleep(2)
-    #box1.mvwin(3,x_pos)
+    box.refresh()
+    sleep(0.2)
+
+box_move()
 
 while True:
     event = screen.getch()
