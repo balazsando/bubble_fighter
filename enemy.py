@@ -5,38 +5,59 @@ import curses
 import time
 from time import sleep
 import random
+import riddle
 
-screen = curses.initscr()
-screen.border(0)
+
+curses.initscr()
+
 curses.noecho()
 curses.curs_set(0)
-screen.keypad(1)
 
-boxes = []
+screen = curses.newwin(curses.LINES, curses.COLS, 0, 0)
+
+box_content = []
+score = 0
+life = 3
+
+def kill_enemy(index):
+    box_content.pop(index)
+
+def key_pressed(key):
+    for i in range(len(box_content)-1):
+        if box_content[i].result == key:
+            global score
+            score+=1
+            kill_enemy(i)
+
+def box_reach_end(i):
+    health-=1
+    kill_enemy(i)
 
 def box_move():
-    for j in range (len(boxes)):
-        screen.erase()
+    for j in range (5):
         screen.border(0)
-        for i in boxes:
+        event = screen.getch()
+        if event != -1:
+            key_pressed(chr(event))
+        for i in box_content:
             screen.refresh()
-            i[1] += i[3]
-            box = curses.newwin(3, len(text)+2, i[1], i[0])
+            i.y_pos += i.speed
+            box = curses.newwin(3, len(i.text)+2, i.y_pos, i.x_pos)
             box.box()
-            box.addstr(1, 1, i[2])
+            box.addstr(1, 1, i.text)
             box.refresh()
-        sleep(0.2)
+        sleep(0.1)
 
-for i in range(8):
-    text = "a"
-    x_pos = random.randrange(1, 74)
-    speed = random.randrange(1,3)
-    box = curses.newwin(3, len(text)+2, 0, x_pos)
+while score != 20:
+    screen.timeout(100)
+    clone = riddle.create_riddle()
+    box = curses.newwin(3, len(clone.text)+2, clone.y_pos, clone.x_pos)
     box.box()
-    box.addstr(1, 1, text)
+    box.addstr(1, 1, clone.text)
     screen.refresh()
     box.refresh()
-    boxes.append([x_pos, 0, text, speed])
+    box_content.append(clone)
+
     box_move()
 
 
