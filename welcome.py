@@ -17,6 +17,7 @@ welcome4 = "Destroy enemies falling from the sky by solving their riddles!    "
 welcome5 = "Solve the math problem or enter the letter to make them disappear."
 welcome6 = "      - POINTS are awarded for each enemy killed.                 "
 welcome7 = "      - You lose LIFE if enemies reach the ground.                "
+exit_inf = "ESC to exit"
 gameover1 = "Traceback (most recent call last):                  "
 gameover2 = "      File \"python/bubble_fighter/welcome.py\", line 20, in <module>"
 gameover3 = "                                         sdfwefw"
@@ -37,6 +38,7 @@ def welcome_screen():
         screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(welcome5)) // 2, welcome5, curses.color_pair(4))
         screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(welcome6)) // 2, welcome6, curses.color_pair(4))
         screen.addstr(curses.LINES // 2 + 7, (curses.COLS - len(welcome7)) // 2, welcome7, curses.color_pair(4))
+        screen.addstr(curses.LINES - 2, curses.COLS - 15, exit_inf)
         select = screen.getch()
         if select == KEY_DOWN:
             screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(3))
