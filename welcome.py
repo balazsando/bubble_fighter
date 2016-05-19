@@ -24,7 +24,7 @@ gameover2 = "      File \"python/bubble_fighter/welcome.py\", line 20, in <modul
 gameover3 = "                                         sdfwefw"
 gameover4 = "                                 NameError: name 'sdfw"
 gameover5 = "Just jokin... you got REKT!"
-gameover6 = "nub... only "+str(enemy.score)+"pts"
+gameover6 = "nub... your points: "
 curses.init_pair(1,-1,1)
 curses.init_pair(2,-1,3)
 curses.init_pair(3,1,-1)
@@ -42,7 +42,7 @@ def game_mode_2():
     global game_mode
     game_mode = 2
 
-def game_over():
+def game_over(score):
     screen.erase()
     screen.addstr(curses.LINES // 3 - 1, curses.COLS // 2, gameover1)
     screen.addstr(curses.LINES // 3, curses.COLS // 2, gameover2)
@@ -55,7 +55,7 @@ def game_over():
     screen.refresh()
     sleep(3)
     screen.erase()
-    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6)
+    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6+str(score))
     screen.refresh()
     sleep(2)
     screen.erase()
@@ -78,8 +78,8 @@ def welcome_screen():
         if select == KEY_UP:
             game_mode_1()
         if select == 10 and game_mode == 1:
-            enemy.game_start()
-            game_over()
+            score = enemy.game_start()
+            game_over(score)
             game_mode_1()
         if select == 27:
             curses.endwin()
