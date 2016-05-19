@@ -44,7 +44,6 @@ def create_riddle():
     else:
         riddle = create_math_problem()
     x_pos = random.randrange(5, curses.COLS-5)
-    y_pos = 0
     speed = random.randrange(1,3)
-    new_riddle = Riddle(riddle[0], riddle[1], x_pos, y_pos, speed)
+    new_riddle = Riddle(riddle[0], riddle[1], x_pos, 3, speed)
     return new_riddle
