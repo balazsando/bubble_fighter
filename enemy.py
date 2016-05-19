@@ -33,6 +33,8 @@ def box_reach_end(i):
     health-=1
     kill_enemy(i)
 
+boxes = []
+
 def box_move():
     for j in range (5):
         screen.border(0)
@@ -46,7 +48,9 @@ def box_move():
             box.box()
             box.addstr(1, 1, i.text)
             box.refresh()
-        sleep(0.1)
+            if i.y_pos > curses.LINES-3:        #add here LINES coordinate
+                sleep(0.1)#add box reach end
+        sleep(0.2)
 
 while score != 20:
     screen.timeout(100)
