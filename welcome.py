@@ -24,6 +24,7 @@ gameover2 = "      File \"python/bubble_fighter/welcome.py\", line 20, in <modul
 gameover3 = "                                         sdfwefw"
 gameover4 = "                                 NameError: name 'sdfw"
 gameover5 = "Just jokin... you got REKT!"
+gameover6 = "nub... only "+str(enemy.score)+"pts"
 curses.init_pair(1,-1,1)
 curses.init_pair(2,-1,3)
 curses.init_pair(3,1,-1)
@@ -54,9 +55,9 @@ def game_over():
     screen.refresh()
     sleep(3)
     screen.erase()
-    screen.addstr(curses.LINES // 2, (curses.COLS - 1) // 2, "nub")
+    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6)
     screen.refresh()
-    sleep(1)
+    sleep(2)
     screen.erase()
 
 def game_info():
