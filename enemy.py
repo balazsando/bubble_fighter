@@ -49,7 +49,7 @@ def key_pressed(key, multi):
             break
 
 def box_reach_end(i, multi):    #BOX REACHING THE GROUND
-    if multi == 0:              #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
+    if not multi:              #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
         global life
         life-=1                 #LOSING LIFE
     kill_enemy(i)
@@ -143,7 +143,7 @@ def multi_start():      #INITIALISING ELEMENTS OF 2-PLAYER MODE
     while life > 0 and life_2 > 0:      #CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
         box_cloning(1)
     box_content.clear()
-    if life == 0 and life_2 == 0:       #EVALUATING WHO THE WINNER IS
+    if life == life_2 == 0:             #EVALUATING WHO THE WINNER IS
         return "No one. You have given up :("
     elif life_2 == 0:
         return "P 2"
