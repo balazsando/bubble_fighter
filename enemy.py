@@ -97,10 +97,9 @@ def box_move(multi):            #METHOD FOR MOVING BOXES
         if event != -1:         #IF ANY KEY PRESSED
             if event == 27:
                 global life
+                global life_2
                 life=0
-                if multi:
-                    global life_2
-                    life_2=0
+                life_2=0
                 break
             key_pressed(chr(event), multi)
         count = 0
