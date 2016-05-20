@@ -95,7 +95,7 @@ def box_move(multi):            #METHOD FOR MOVING BOXES
         screen.border(0)
         event = screen.getch()
         if event != -1:         #IF ANY KEY PRESSED
-            if event == 27:
+            if event == 27:     #GIVING UP BY PRESSING ESC (OR MANY OTHER FUNCTION KEYS AS IT SEEMS...)
                 global life
                 global life_2
                 life=0
