@@ -23,7 +23,7 @@ screen.timeout(10)
 box_content = []        #LIST INCLUDING ALL DATA FOR RIDDLE
 score = 0
 life = 0
-life_2 = 0
+life_2 = 0              #LIFE_2 IS PLAYER 1'S HEALTHBAR IN 2 PLAYER MODE FOR EASIER CODING (RIGHT_TEXT METHOD)
 
 def kill_enemy(index):
     box_content.pop(index)  #REMOVING BOX'S DATA FROM LIST
@@ -33,48 +33,47 @@ def key_pressed(key, multi):
         if multi:                               #2-PLAYER EVENT
             global life
             global life_2
-            if box_content[i].result[0] == key: #PLAYER-1 INPUT
-                life_2-=1                       #DAMAGE TO PLAYER-2
+            if box_content[i].input[0] == key:  #PLAYER-1 INPUT
+                life-=1                         #DAMAGE TO PLAYER-2
                 kill_enemy(i)                   #REMOVING BOX FROM SCREEN
                 break
-            if box_content[i].result[1] == key: #PLAYER-2 INPUT
-                life-= 1                        #DAMAGE TO PLAYER-1
+            if box_content[i].input[1] == key:  #PLAYER-2 INPUT
+                life_2-= 1                      #DAMAGE TO PLAYER-1
                 kill_enemy(i)                   #REMOVING BOX FROM SCREEN
                 break
-        else:                                   #1-PLAYER EVENT
-            if box_content[i].result == key:
-                global score
-                score+=1                        #INCREASING SCORE WHEN RIGHT INPUT GIVEN
-                kill_enemy(i)                   #REMOVING BOX FROM SCREEN
-                curses.beep()
-                break
+        elif box_content[i].input == key:       #1-PLAYER EVENT
+            global score
+            score+=1                        #INCREASING SCORE WHEN RIGHT INPUT GIVEN
+            kill_enemy(i)                   #REMOVING BOX FROM SCREEN
+            curses.beep()
+            break
 
-def box_reach_end(i, multi): #BOX REACHING THE GROUND
-    if multi == 0:          #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
+def box_reach_end(i, multi):    #BOX REACHING THE GROUND
+    if multi == 0:              #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
         global life
-        life-=1             #LOSING LIFE
+        life-=1                 #LOSING LIFE
     kill_enemy(i)
 
-def right_text(multi):      #HEADER INFO POSITIONED ON THE RIGHT
+def right_text(multi):          #HEADER INFO POSITIONED ON THE RIGHT
     lifes = ""
-    if multi:               #WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 2 HEALTH BAR
-        for l in range(life_2): lifes += "💚 "
-        for l in range(10-life_2): lifes += "💀 "
-        lifes += str(life_2)
-        right_text = "P 2: "+lifes
-    else:                   #WHEN IN 1-PLAYER MODE DISPLAYING PLAYER'S REMAINING LIFE
-        for l in range(life): lifes += "💚 "
-        for l in range(5-life): lifes += "💀 "
-        lifes += str(life)
-        right_text = "LIFE: "+lifes
+    if multi:                   #WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 2 HEALTH BAR
+        max_life = 10
+        player = "P 2: "
+    else:                       #WHEN IN 1-PLAYER MODE DISPLAYING PLAYER'S REMAINING LIFE
+        max_life = 5
+        player = "LIFE: "
+    for l in range(life): lifes += "💚 "
+    for l in range(max_life-life): lifes += "💀 "
+    lifes += str(life)
+    right_text = player+lifes
     return right_text
 
 def left_text(multi):       #HEADER INFO POSITIONED ON THE LEFT
     if multi:               #WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 1 HEALTH BAR
         lifes = ""
-        for l in range(life): lifes += "💚 "
-        for l in range(10-life): lifes += "💀 "
-        lifes += str(life)
+        for l in range(life_2): lifes += "💚 "
+        for l in range(10-life_2): lifes += "💀 "
+        lifes += str(life_2)
         left_text = "P 1: "+lifes
     else:                   #WHEN IN 1-PLAYER MODE DISPLAYING PLAYER'S SCORE
         left_text = "SCORE: "+str(score)
@@ -91,7 +90,7 @@ def header(multi):          #ASSEMBLING ALL INFO IN HEADER
     game_progress.addstr(1, curses.COLS-30, right)
     game_progress.refresh()
 
-def box_move(multi):        #METHOD FOR MOVING BOXES
+def box_move(multi):            #METHOD FOR MOVING BOXES
     for j in range ((multi+2)**2):
         screen.border(0)
         event = screen.getch()
@@ -114,7 +113,7 @@ def box_move(multi):        #METHOD FOR MOVING BOXES
             box.refresh()
             if i.y_pos > curses.LINES-5:    #DEFINING WHEN DOES BOX REACH THE GROUND
                 box_reach_end(count, multi)
-                if life == 0: break     #IF IN 1-PLAYER MODE UPON LOSING ALL LIFE QUIT THE GAME
+                if life == 0: break         #IF IN 1-PLAYER MODE UPON LOSING ALL LIFE QUIT THE GAME
             i.y_pos += i.speed
             count+=1
         if box_content:     #IF ALL BOXES DESTROYED CUTS OFF DELAY OF CYCLE
@@ -141,13 +140,12 @@ def multi_start():      #INITIALISING ELEMENTS OF 2-PLAYER MODE
     global life_2
     life = 10
     life_2 = 10
-    while life > 0 and life_2 > 0:  #CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
+    while life > 0 and life_2 > 0:      #CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
         box_cloning(1)
     box_content.clear()
-    if life == 0 and life_2 == 0:       #EVALUATING WHO IS THE WINNER IS
+    if life == 0 and life_2 == 0:       #EVALUATING WHO THE WINNER IS
         return "No one. You have given up :("
+    elif life_2 == 0:
+        return "P 2"
     else:
-        if life == 0:
-            return "P 2"
-        else:
-            return "P 1"
+        return "P 1"
