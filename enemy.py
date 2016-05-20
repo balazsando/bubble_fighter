@@ -144,7 +144,7 @@ def multi_start():      #INITIALISING ELEMENTS OF 2-PLAYER MODE
     while life > 0 and life_2 > 0:  #CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
         box_cloning(1)
     box_content.clear()
-    if life == 0 and life == 0:       #EVALUATING WHO IS THE WINNER IS
+    if life == 0 and life_2 == 0:       #EVALUATING WHO IS THE WINNER IS
         return "No one. You have given up :("
     else:
         if life == 0:
