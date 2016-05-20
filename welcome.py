@@ -36,7 +36,7 @@ curses.init_pair(2,-1,3)
 curses.init_pair(3,1,-1)
 curses.init_pair(4,7,0)
 
-def game_mode_1():
+def game_mode_1():          #GAME MODE 1 DESCRIPTION - 1 PLAYER
     screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(2))
     screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(welcome3)) // 2, welcome3, curses.color_pair(3))
     screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(soloinf1)) // 2, soloinf1, curses.color_pair(4))
@@ -46,7 +46,7 @@ def game_mode_1():
     global game_mode
     game_mode = 1
 
-def game_mode_2():
+def game_mode_2():          #GAME MODE 2 DESCRIPTION - 2 PLAYERS
     screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(3))
     screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(welcome3)) // 2, welcome3, curses.color_pair(2))
     screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(multinf1)) // 2, multinf1, curses.color_pair(4))
@@ -56,7 +56,7 @@ def game_mode_2():
     global game_mode
     game_mode = 2
 
-def player_win(player):
+def player_win(player):     #END SCREEN FOR 2-PLAYER MODE
     screen.erase()
     screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(playerwin1)) // 2, playerwin1)
     screen.refresh()
@@ -69,7 +69,7 @@ def player_win(player):
     sleep(2)
     screen.erase()
 
-def game_over(score):
+def game_over(score):       #END SCREEN FOR 1-PLAYER MODE
     screen.erase()
     screen.addstr(curses.LINES // 3 - 1, curses.COLS // 2, gameover1)
     screen.addstr(curses.LINES // 3, curses.COLS // 2, gameover2)
@@ -87,12 +87,12 @@ def game_over(score):
     sleep(2)
     screen.erase()
 
-def game_info():
+def game_info():        #IN-GAME MENU (GAME NAME, EXIT INFO)
     screen.addstr(curses.LINES // 2 - 5, (curses.COLS - len(welcome1)) // 2, welcome1, curses.color_pair(1))
     screen.addstr(curses.LINES - 2, curses.COLS - 15, exit_inf)
 
-def welcome_screen():
-    game_mode_1()
+def welcome_screen():   #GAME MODE SELECTION
+    game_mode_1()       #1-PLAYER MODE DEFAULT UPON LAUNCHING GAME
     while True:
         game_info()
         select = screen.getch()
