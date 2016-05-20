@@ -96,10 +96,13 @@ def box_move(multi):        #METHOD FOR MOVING BOXES
         screen.border(0)
         event = screen.getch()
         if event != -1:         #IF ANY KEY PRESSED
-            #if event == 27:
-            #    global life
-            #    life=0
-            #    break
+            if event == 27:
+                global life
+                life=0
+                if multi:
+                    global life_2
+                    life_2=0
+                break
             key_pressed(chr(event), multi)
         count = 0
         for i in box_content:   #ADDING BOX TO SCREEN
@@ -141,7 +144,10 @@ def multi_start():      #INITIALISING ELEMENTS OF 2-PLAYER MODE
     while life > 0 and life_2 > 0:  #CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
         box_cloning(1)
     box_content.clear()
-    if life == 0:       #EVALUATING WHO IS THE WINNER IS
-        return "P 2"
+    if life == 0 and life == 0:       #EVALUATING WHO IS THE WINNER IS
+        return "No one. You have given up :("
     else:
-        return "P 1"
+        if life == 0:
+            return "P 2"
+        else:
+            return "P 1"

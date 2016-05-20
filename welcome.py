@@ -64,7 +64,7 @@ def player_win(player):     #END SCREEN FOR 2-PLAYER MODE
     screen.addstr(curses.LINES // 2, (curses.COLS - len(playerwin2)) // 2, playerwin2)
     screen.refresh()
     sleep(1)
-    screen.addstr(curses.LINES // 2+2, curses.COLS // 2 -1, player)
+    screen.addstr(curses.LINES // 2+2, (curses.COLS - len(player)) // 2, player)
     screen.refresh()
     sleep(2)
     screen.erase()
