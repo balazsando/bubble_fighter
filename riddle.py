@@ -18,6 +18,12 @@ def do_the_math(oper, num1, num2):
     }
     return switcher.get(oper)
 
+def create_random_arrow():
+    arrow = [ "←" , "→", "↑", "↓", "a", "d", "w", "s", "4", "6", "8", "5" ]
+    rnd = random.randrange(4)
+    new_rid = [arrow[rnd], [arrow[rnd+4], arrow[rnd+8]] ]
+    return new_rid
+
 
 def create_math_problem():
     new_result = 10
@@ -37,12 +43,15 @@ def create_random_letter():
     letter = random.choice(alphabet)
     return [letter, letter]
 
-def create_riddle():
-    type = random.getrandbits(1)
-    if type:
-        riddle = create_random_letter()
+def create_riddle(multi):
+    if multi:
+        riddle = create_random_arrow()
     else:
-        riddle = create_math_problem()
+        type = random.getrandbits(1)
+        if type:
+            riddle = create_random_letter()
+        else:
+            riddle = create_math_problem()
     x_pos = random.randrange(5, curses.COLS-5)
     speed = random.randrange(1,3)
     new_riddle = Riddle(riddle[0], riddle[1], x_pos, 3, speed)
