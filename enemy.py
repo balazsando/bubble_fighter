@@ -12,6 +12,7 @@ curses.initscr()
 curses.start_color()
 curses.use_default_colors()
 curses.init_pair(5, 0, 7)       #DEFINING COLOR FOR BOXES
+curses.init_pair(6, 0, 1)       #DEFINING COLOR FOR DESTROYED BOXES
 
 curses.noecho()
 curses.curs_set(0)
@@ -26,6 +27,11 @@ life = 0
 life_2 = 0              #LIFE_2 IS PLAYER 1'S HEALTHBAR IN 2 PLAYER MODE FOR EASIER CODING (RIGHT_TEXT METHOD)
 
 def kill_enemy(index):
+    box = curses.newwin(3, len(box_content[index].text)+2, box_content[index].y_pos, box_content[index].x_pos)
+    box.bkgd(curses.color_pair(6))  #VISUALIZATION FOR DESTROYING BOXES
+    box.box()
+    box.refresh()
+    sleep(0.05)
     box_content.pop(index)  #REMOVING BOX'S DATA FROM LIST
 
 def key_pressed(key, multi):
@@ -45,11 +51,10 @@ def key_pressed(key, multi):
             global score
             score+=1                        #INCREASING SCORE WHEN RIGHT INPUT GIVEN
             kill_enemy(i)                   #REMOVING BOX FROM SCREEN
-            curses.beep()
             break
 
 def box_reach_end(i, multi):    #BOX REACHING THE GROUND
-    if not multi:              #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
+    if not multi:               #1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
         global life
         life-=1                 #LOSING LIFE
     kill_enemy(i)
