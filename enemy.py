@@ -92,7 +92,7 @@ def header(multi):          #ASSEMBLING ALL INFO IN HEADER
 
 def box_move(multi):            #METHOD FOR MOVING BOXES
     for j in range ((multi+2)**2):
-        screen.border(0)
+        screen.box()
         event = screen.getch()
         if event != -1:         #IF ANY KEY PRESSED
             if event == 27:     #GIVING UP BY PRESSING ESC (OR MANY OTHER FUNCTION KEYS AS IT SEEMS...)
@@ -110,7 +110,7 @@ def box_move(multi):            #METHOD FOR MOVING BOXES
             box.addstr(1, 1, i.text)
             box.box()
             box.refresh()
-            if i.y_pos > curses.LINES-5:    #DEFINING WHEN DOES BOX REACH THE GROUND
+            if i.y_pos > curses.LINES-6:    #DEFINING WHEN DOES BOX REACH THE GROUND
                 box_reach_end(count, multi)
                 if life == 0: break         #IF IN 1-PLAYER MODE UPON LOSING ALL LIFE QUIT THE GAME
             i.y_pos += i.speed
