@@ -1,0 +1,20 @@
+RIDDLE FIGHTER 1.0 is a bubble popper-type game.
+
+In single player mode enemy units appear at the top of the game field and move down at varying speed, each containing
+a riddle, which may include single letters or simple math problems. When enemy units hit the bottom of the game field
+the player looses life points (displayed on the top right corner). Reaching zero life points results in game over.
+Solution to riddles can be given using the keyboard and a correct solution will erase enemy units from the game field.
+Points (displayed on the top left corner) are awarded for riddles solved. At game over the final score is displayed.
+
+In 2-player mode enemy units contain only up,down,left,right arrows. Players need to hit the right keys to obtain an
+enemy unit (player1: using arrow keys; player2: using 4,8,5,6 numpad keys). The first player to hit the right keys
+will obtain the enemy unit and also do damage to the other player. Damage will deduct a life point (displayed on each
+side of the top of the game field) from the relevant player.The first player to lose all life will lose the game.
+The game over message displays the winner.
+
+Updates in RIDDLE FIGHTER 2.0:
+- implement life saver question in single player mode (when an enemy units hits the bottom of game field an extra
+  question is displayed, if correct answer is given, no life is lost (with limited time to give an answer)
+- implement high score
+- fix bug that causes all enemy units present blinking when one is reaching the bottom
+- add sound to the game (?)
