@@ -28,7 +28,7 @@ life = 0
 life_2 = 0              # LIFE_2 IS PLAYER 1'S HEALTHBAR IN 2 PLAYER MODE FOR EASIER CODING (RIGHT_TEXT METHOD)
 
 
-def kill_enemy(index):
+def kill_enemy(index=0):
     box = curses.newwin(3, len(box_content[index].text)+2, box_content[index].y_pos, box_content[index].x_pos)
     box.bkgd(curses.color_pair(6))  # VISUALIZATION FOR DESTROYING BOXES
     box.box()
@@ -43,11 +43,9 @@ def key_pressed(key):
         global life_2
         life = 0
         life_2 = 0
-    if key != -1:         # IF ANY KEY PRESSED
+    elif key != -1:         # IF ANY KEY PRESSED
         for i in range(len(box_content)):
             if multi:                               # 2-PLAYER EVENT
-                global life
-                global life_2
                 if box_content[i].input[0] == chr(key):  # PLAYER-1 INPUT
                     life -= 1                         # DAMAGE TO PLAYER-2
                     kill_enemy(i)                   # REMOVING BOX FROM SCREEN
@@ -63,11 +61,13 @@ def key_pressed(key):
                 break
 
 
-def box_reach_end(i):    # BOX REACHING THE GROUND
-    if not multi:               # 1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
-        global life
-        life -= 1                 # LOSING LIFE
-    kill_enemy(i)
+def box_reach_end():    # BOX REACHING THE GROUND
+    box_content.sort(key=lambda box: box.y_pos, reverse=True)
+    while ([box for box in box_content if box.y_pos > curses.LINES-7]):
+        if not multi:               # 1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
+            global life
+            life -= 1                 # LOSING LIFE
+        kill_enemy()
 
 
 def right_text():          # HEADER INFO POSITIONED ON THE RIGHT
@@ -111,20 +111,17 @@ def header():          # ASSEMBLING ALL INFO IN HEADER
 def box_move():            # METHOD FOR MOVING BOXES
     for j in range((multi+2)**2):
         screen.box()
+        box_reach_end()
         key_pressed(screen.getch())
         count = 0
         for i in box_content:   # ADDING BOX TO SCREEN
             header()
+            i.y_pos += i.speed
             box = curses.newwin(3, len(i.text)+2, i.y_pos, i.x_pos)
             box.attrset(curses.color_pair(5))
             box.addstr(1, 1, i.text)
             box.box()
             box.refresh()
-            if i.y_pos > curses.LINES-6:    # DEFINING WHEN DOES BOX REACH THE GROUND
-                box_reach_end(count)
-                if life == 0:
-                    break         # IF IN 1-PLAYER MODE UPON LOSING ALL LIFE QUIT THE GAME
-            i.y_pos += i.speed
             count += 1
         if box_content:     # IF ALL BOXES DESTROYED CUTS OFF DELAY OF CYCLE
             sleep(0.2)
