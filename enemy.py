@@ -22,6 +22,7 @@ screen.nodelay(1)
 screen.timeout(10)
 
 box_content = []        # LIST INCLUDING ALL DATA FOR RIDDLE
+multi = 0
 score = 0
 life = 0
 life_2 = 0              # LIFE_2 IS PLAYER 1'S HEALTHBAR IN 2 PLAYER MODE FOR EASIER CODING (RIGHT_TEXT METHOD)
@@ -36,7 +37,7 @@ def kill_enemy(index):
     box_content.pop(index)  # REMOVING BOX'S DATA FROM LIST
 
 
-def key_pressed(key, multi):
+def key_pressed(key):
     for i in range(len(box_content)):
         if multi:                               # 2-PLAYER EVENT
             global life
@@ -56,14 +57,14 @@ def key_pressed(key, multi):
             break
 
 
-def box_reach_end(i, multi):    # BOX REACHING THE GROUND
+def box_reach_end(i):    # BOX REACHING THE GROUND
     if not multi:               # 1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
         global life
         life -= 1                 # LOSING LIFE
     kill_enemy(i)
 
 
-def right_text(multi):          # HEADER INFO POSITIONED ON THE RIGHT
+def right_text():          # HEADER INFO POSITIONED ON THE RIGHT
     lifes = ""
     if multi:                   # WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 2 HEALTH BAR
         max_life = 10
@@ -80,7 +81,7 @@ def right_text(multi):          # HEADER INFO POSITIONED ON THE RIGHT
     return right_text
 
 
-def left_text(multi):       # HEADER INFO POSITIONED ON THE LEFT
+def left_text():       # HEADER INFO POSITIONED ON THE LEFT
     if multi:               # WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 1 HEALTH BAR
         lifes = ""
         for l in range(life_2):
@@ -94,19 +95,19 @@ def left_text(multi):       # HEADER INFO POSITIONED ON THE LEFT
     return left_text
 
 
-def header(multi):          # ASSEMBLING ALL INFO IN HEADER
+def header():          # ASSEMBLING ALL INFO IN HEADER
     game_progress = curses.newwin(3, curses.COLS, 0, 0)
     game_progress.box()
     title = "BUBBLE - FIGHTER 1.0"
-    left = left_text(multi)
-    right = right_text(multi)
+    left = left_text()
+    right = right_text()
     game_progress.addstr(1, 1, left)
     game_progress.addstr(1, (curses.COLS - len(title)) // 2, title)
     game_progress.addstr(1, curses.COLS-30, right)
     game_progress.refresh()
 
 
-def box_move(multi):            # METHOD FOR MOVING BOXES
+def box_move():            # METHOD FOR MOVING BOXES
     for j in range((multi+2)**2):
         screen.box()
         event = screen.getch()
@@ -117,17 +118,17 @@ def box_move(multi):            # METHOD FOR MOVING BOXES
                 life = 0
                 life_2 = 0
                 break
-            key_pressed(chr(event), multi)
+            key_pressed(chr(event))
         count = 0
         for i in box_content:   # ADDING BOX TO SCREEN
-            header(multi)
+            header()
             box = curses.newwin(3, len(i.text)+2, i.y_pos, i.x_pos)
             box.attrset(curses.color_pair(5))
             box.addstr(1, 1, i.text)
             box.box()
             box.refresh()
             if i.y_pos > curses.LINES-6:    # DEFINING WHEN DOES BOX REACH THE GROUND
-                box_reach_end(count, multi)
+                box_reach_end(count)
                 if life == 0:
                     break         # IF IN 1-PLAYER MODE UPON LOSING ALL LIFE QUIT THE GAME
             i.y_pos += i.speed
@@ -136,31 +137,35 @@ def box_move(multi):            # METHOD FOR MOVING BOXES
             sleep(0.2)
 
 
-def box_cloning(multi):         # ADDING BOX DATA TO LIST
+def box_cloning():         # ADDING BOX DATA TO LIST
     clone = riddle.create_riddle(multi)
     box_content.append(clone)
-    box_move(multi)
+    box_move()
 
 
 def solo_start():       # INITIALISING ELEMENTS OF 1-PLAYER MODE
+    global multi
     global life
     global score
     global box_content
+    multi = 0
     life = 5
     score = 0
     while life > 0:     # CREATING BOXES TILL PLAYER DIES
-        box_cloning(0)
+        box_cloning()
     box_content.clear()
     return score
 
 
 def multi_start():      # INITIALISING ELEMENTS OF 2-PLAYER MODE
+    global multi
     global life
     global life_2
+    multi = 1
     life = 10
     life_2 = 10
     while life > 0 and life_2 > 0:      # CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
-        box_cloning(1)
+        box_cloning()
     box_content.clear()
     if life == life_2 == 0:             # EVALUATING WHO THE WINNER IS
         return "No one. You have given up :("
