@@ -113,6 +113,7 @@ def exp_score(score):
         print(score)
         if len(scores) < 3:
             scores.append(score)
+            scores.sort(reverse=True)
         else:
             if score > min(scores):
                 scores.remove(min(scores))
