@@ -12,7 +12,9 @@ curses.initscr()
 curses.start_color()
 curses.use_default_colors()
 curses.init_pair(5, 0, 7)       # DEFINING COLOR FOR BOXES
-curses.init_pair(6, 0, 1)       # DEFINING COLOR FOR DESTROYED BOXES
+curses.init_pair(6, 0, 1)       # DEFINING COLOR FOR DESTROYED BOXES BY REACHING END
+curses.init_pair(7, 0, 3)       # DEFINING COLOR FOR DESTROYED BOXES BY PLAYER-1
+curses.init_pair(8, 0, 4)       # DEFINING COLOR FOR DESTROYED BOXES BY PLAYER-2
 
 curses.noecho()
 curses.curs_set(0)
@@ -28,12 +30,12 @@ life = 0
 life_2 = 0              # LIFE_2 IS PLAYER 1'S HEALTHBAR IN 2 PLAYER MODE FOR EASIER CODING (RIGHT_TEXT METHOD)
 
 
-def kill_enemy(index=0):
+def kill_enemy(color, index=0):
     box = curses.newwin(3, len(box_content[index].text)+2, box_content[index].y_pos, box_content[index].x_pos)
-    box.bkgd(curses.color_pair(6))  # VISUALIZATION FOR DESTROYING BOXES
+    box.bkgd(curses.color_pair(color))  # VISUALIZATION FOR DESTROYING BOXES
     box.box()
     box.refresh()
-    sleep(0.05)
+    sleep(0.1)
     box_content.pop(index)  # REMOVING BOX'S DATA FROM LIST
 
 
@@ -48,16 +50,16 @@ def key_pressed(key):
             if multi:                               # 2-PLAYER EVENT
                 if box_content[i].input[0] == chr(key):  # PLAYER-1 INPUT
                     life -= 1                         # DAMAGE TO PLAYER-2
-                    kill_enemy(i)                   # REMOVING BOX FROM SCREEN
+                    kill_enemy(7, i)                   # REMOVING BOX FROM SCREEN
                     break
                 if box_content[i].input[1] == chr(key):  # PLAYER-2 INPUT
                     life_2 -= 1                      # DAMAGE TO PLAYER-1
-                    kill_enemy(i)                   # REMOVING BOX FROM SCREEN
+                    kill_enemy(8, i)                   # REMOVING BOX FROM SCREEN
                     break
             elif box_content[i].input == chr(key):       # 1-PLAYER EVENT
                 global score
                 score += 1                        # INCREASING SCORE WHEN RIGHT INPUT GIVEN
-                kill_enemy(i)                   # REMOVING BOX FROM SCREEN
+                kill_enemy(7, i)                   # REMOVING BOX FROM SCREEN
                 break
 
 
@@ -67,7 +69,7 @@ def box_reach_end():    # BOX REACHING THE GROUND
         if not multi:               # 1-PLAYER EVENT (IRRELEVANT IN 2-PLAYER MODE)
             global life
             life -= 1                 # LOSING LIFE
-        kill_enemy()
+        kill_enemy(6)
 
 
 def right_text():          # HEADER INFO POSITIONED ON THE RIGHT
