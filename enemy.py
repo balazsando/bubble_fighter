@@ -65,31 +65,28 @@ def box_reach_end(i):    # BOX REACHING THE GROUND
 
 
 def right_text():          # HEADER INFO POSITIONED ON THE RIGHT
-    lifes = ""
     if multi:                   # WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 2 HEALTH BAR
         max_life = 10
-        player = "P 2: "
+        right_text = "P 2: "
     else:                       # WHEN IN 1-PLAYER MODE DISPLAYING PLAYER'S REMAINING LIFE
         max_life = 5
-        player = "LIFE: "
+        right_text = "LIFE: "
     for l in range(life):
-        lifes += "💚 "
+        right_text += "💚 "
     for l in range(max_life-life):
-        lifes += "💀 "
-    lifes += str(life)
-    right_text = player+lifes
+        right_text += "💀 "
+    right_text += str(life)
     return right_text
 
 
 def left_text():       # HEADER INFO POSITIONED ON THE LEFT
     if multi:               # WHEN IN 2-PLAYER MODE DISPLAYING PLAYER 1 HEALTH BAR
-        lifes = ""
+        left_text = "P 1: "
         for l in range(life_2):
-            lifes += "💚 "
+            left_text += "💚 "
         for l in range(10-life_2):
-            lifes += "💀 "
-        lifes += str(life_2)
-        left_text = "P 1: "+lifes
+            left_text += "💀 "
+        left_text += str(life_2)
     else:                   # WHEN IN 1-PLAYER MODE DISPLAYING PLAYER'S SCORE
         left_text = "SCORE: "+str(score)
     return left_text
@@ -99,11 +96,9 @@ def header():          # ASSEMBLING ALL INFO IN HEADER
     game_progress = curses.newwin(3, curses.COLS, 0, 0)
     game_progress.box()
     title = "BUBBLE - FIGHTER 1.0"
-    left = left_text()
-    right = right_text()
-    game_progress.addstr(1, 1, left)
+    game_progress.addstr(1, 1, left_text())
     game_progress.addstr(1, (curses.COLS - len(title)) // 2, title)
-    game_progress.addstr(1, curses.COLS-30, right)
+    game_progress.addstr(1, curses.COLS-30, right_text())
     game_progress.refresh()
 
 
