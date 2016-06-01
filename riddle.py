@@ -21,20 +21,19 @@ def create_random_arrow():      # CREATING ARROW TYPE BOXES
 
 
 def do_the_math(oper, num1, num2):  # CALCULATING INPUT NEEDED FOR MATH TYPE BOX
-    switcher = {"+": num1+num2, "-": num1-num2, "*": num1*num2}
+    switcher = {"+": num1+num2, "-": num1-num2, "*": num1*num2, "/": num1/num2}
     return switcher.get(oper)
 
 
 def create_math_problem():      # CREATING MATH TYPE BOXES
     new_input = 10
-    while new_input > 9 or new_input < 1:   # CALCULATIN MATH TYPE BOXES TILL INPUT NEEDED IS 1-9
-        num1 = random.randrange(0, 6)
-        operation = ['+', '-', '*']
-        oper = random.choice(operation)
-        num2 = random.randrange(0, 6)
+    oper = random.choice(["+", "-", "*", "/"])
+    while new_input > 9 or new_input < 0 or new_input % 1:   # CALCULATE MATH TYPE BOXES TILL INPUT IS 1-9 AND NOT FLOAT
+        num1 = random.randrange(0, 10)
+        num2 = random.randrange(1, 10)
         new_text = str(num1)+oper+str(num2)     # CREATING DISPLAY
         new_input = do_the_math(oper, num1, num2)  # CREATING INPUT NEEDED
-    new_rid = [new_text, str(new_input)]
+    new_rid = [new_text, str(int(new_input))]
     return new_rid
 
 
