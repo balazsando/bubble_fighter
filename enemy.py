@@ -110,6 +110,8 @@ def header():          # ASSEMBLING ALL INFO IN HEADER
 
 def box_move():            # METHOD FOR MOVING BOXES
     for j in range((multi+2)**2):
+        if life == 0 or (multi and life_2 == 0):
+            break
         screen.box()
         box_reach_end()
         key_pressed(screen.getch())
