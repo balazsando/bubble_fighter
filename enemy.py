@@ -38,23 +38,29 @@ def kill_enemy(index):
 
 
 def key_pressed(key):
-    for i in range(len(box_content)):
-        if multi:                               # 2-PLAYER EVENT
-            global life
-            global life_2
-            if box_content[i].input[0] == key:  # PLAYER-1 INPUT
-                life -= 1                         # DAMAGE TO PLAYER-2
+    if key == 27:     # GIVING UP BY PRESSING ESC (OR MANY OTHER FUNCTION KEYS AS IT SEEMS...)
+        global life
+        global life_2
+        life = 0
+        life_2 = 0
+    if key != -1:         # IF ANY KEY PRESSED
+        for i in range(len(box_content)):
+            if multi:                               # 2-PLAYER EVENT
+                global life
+                global life_2
+                if box_content[i].input[0] == chr(key):  # PLAYER-1 INPUT
+                    life -= 1                         # DAMAGE TO PLAYER-2
+                    kill_enemy(i)                   # REMOVING BOX FROM SCREEN
+                    break
+                if box_content[i].input[1] == chr(key):  # PLAYER-2 INPUT
+                    life_2 -= 1                      # DAMAGE TO PLAYER-1
+                    kill_enemy(i)                   # REMOVING BOX FROM SCREEN
+                    break
+            elif box_content[i].input == chr(key):       # 1-PLAYER EVENT
+                global score
+                score += 1                        # INCREASING SCORE WHEN RIGHT INPUT GIVEN
                 kill_enemy(i)                   # REMOVING BOX FROM SCREEN
                 break
-            if box_content[i].input[1] == key:  # PLAYER-2 INPUT
-                life_2 -= 1                      # DAMAGE TO PLAYER-1
-                kill_enemy(i)                   # REMOVING BOX FROM SCREEN
-                break
-        elif box_content[i].input == key:       # 1-PLAYER EVENT
-            global score
-            score += 1                        # INCREASING SCORE WHEN RIGHT INPUT GIVEN
-            kill_enemy(i)                   # REMOVING BOX FROM SCREEN
-            break
 
 
 def box_reach_end(i):    # BOX REACHING THE GROUND
@@ -105,15 +111,7 @@ def header():          # ASSEMBLING ALL INFO IN HEADER
 def box_move():            # METHOD FOR MOVING BOXES
     for j in range((multi+2)**2):
         screen.box()
-        event = screen.getch()
-        if event != -1:         # IF ANY KEY PRESSED
-            if event == 27:     # GIVING UP BY PRESSING ESC (OR MANY OTHER FUNCTION KEYS AS IT SEEMS...)
-                global life
-                global life_2
-                life = 0
-                life_2 = 0
-                break
-            key_pressed(chr(event))
+        key_pressed(screen.getch())
         count = 0
         for i in box_content:   # ADDING BOX TO SCREEN
             header()
