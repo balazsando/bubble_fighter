@@ -26,7 +26,7 @@ multinf1 = "Fight againts another player and prove you have lightning reflexes"
 multinf2 = "Whoever pressing the correct button first will damage the opponent"
 multinf3 = "      - LIFE is taken from opponent for each score.               "
 multinf4 = "      - P1 use W, A, S, D letters, P2 use 8, 4, 5, 6 numbers      "
-highinf1 = "                               TOP 3:                             "
+highinf1 = "        TOP 3:         SCORE          DATE                        "
 exit_inf = "ESC to exit"
 gameover1 = "Traceback (most recent call last):                  "
 gameover2 = "      File \"python/bubble_fighter/welcome.py\", line 20, in <module>"
@@ -75,9 +75,8 @@ def high_score():
     if score_list():
         scores = score_list()
         for i in range(len(scores)):
-            hs_string = str(scores[i][0])+"    "+str(scores[i][1])
-            str_len = (len(highinf1) - len(hs_string)) / 2
-            scores_format[i] = (" " * math.ceil(str_len) + hs_string + " " * math.floor(str_len))
+            scores_format[i] = str(" " * 23 + scores[i][0]
+                                   + " " * (15 - len(scores[i][0])) + scores[i][1] + " " * (28 - len(scores[i][1])))
     screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(highinf1)) // 2, highinf1, curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(highinf1)) // 2, scores_format[0], curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(highinf1)) // 2, scores_format[1], curses.color_pair(4))
