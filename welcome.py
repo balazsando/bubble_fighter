@@ -75,8 +75,8 @@ def high_score():
     if score_list():
         scores = score_list()
         for i in range(len(scores)):
-            scores_format[i] = str(" " * 23 + scores[i][0]
-                                   + " " * (15 - len(scores[i][0])) + scores[i][1] + " " * (28 - len(scores[i][1])))
+            scores_format[i] = str(" " * 23 + scores[i][0] +
+                                   " " * (15 - len(scores[i][0])) + scores[i][1] + " " * (28 - len(scores[i][1])))
     screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(highinf1)) // 2, highinf1, curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(highinf1)) // 2, scores_format[0], curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(highinf1)) // 2, scores_format[1], curses.color_pair(4))
@@ -142,7 +142,10 @@ def game_over(score):       # END SCREEN FOR 1-PLAYER MODE
     sleep(3)
     screen.erase()
     screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6+str(score[0]))
-    if score[0] > int(score_list()[0][0]):
+    if score_list():
+        if score[0] > int(score_list()[0][0]):
+            screen.addstr(curses.LINES // 2 - 2, (curses.COLS - len(gameover7)) // 2, gameover7)
+    else:
         screen.addstr(curses.LINES // 2 - 2, (curses.COLS - len(gameover7)) // 2, gameover7)
     exp_score(score)
     screen.refresh()
