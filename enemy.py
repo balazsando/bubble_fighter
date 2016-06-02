@@ -6,6 +6,7 @@ import time
 from time import sleep
 import random
 import riddle
+import datetime
 
 
 curses.initscr()
@@ -148,7 +149,12 @@ def solo_start():       # INITIALISING ELEMENTS OF 1-PLAYER MODE
     while life > 0:     # CREATING BOXES TILL PLAYER DIES
         box_cloning()
     box_content.clear()
-    return score
+    date = (str(datetime.datetime.now().year)+"."
+            + str(datetime.datetime.now().month)+"."
+            + str(datetime.datetime.now().day)+"  "
+            + str(datetime.datetime.now().hour)+":"
+            + str(datetime.datetime.now().minute))
+    return [score, date]
 
 
 def multi_start():      # INITIALISING ELEMENTS OF 2-PLAYER MODE

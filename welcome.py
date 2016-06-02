@@ -4,6 +4,7 @@ from curses import KEY_UP, KEY_DOWN
 from time import sleep
 import os.path
 import math
+import datetime
 
 curses.initscr()
 curses.start_color()
@@ -33,6 +34,7 @@ gameover3 = "                                         sdfwefw"
 gameover4 = "                                 NameError: name 'sdfw"
 gameover5 = "Just jokin... you got REKT!"
 gameover6 = "Your score is: "
+gameover7 = "NEW HIGH SCORE - CONGRATS"
 playerwin1 = "What an intense fight... You both fought well!"
 playerwin2 = "And the winner is:"
 curses.init_pair(1, -1, 1)
@@ -73,8 +75,9 @@ def high_score():
     if score_list():
         scores = score_list()
         for i in range(len(scores)):
-            str_len = (len(highinf1) - len(str(scores[i]))) / 2
-            scores_format[i] = (" " * math.ceil(str_len) + str(scores[i]) + " " * math.floor(str_len))
+            hs_string = str(scores[i][0])+"    "+str(scores[i][1])
+            str_len = (len(highinf1) - len(hs_string)) / 2
+            scores_format[i] = (" " * math.ceil(str_len) + hs_string + " " * math.floor(str_len))
     screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(highinf1)) // 2, highinf1, curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(highinf1)) // 2, scores_format[0], curses.color_pair(4))
     screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(highinf1)) // 2, scores_format[1], curses.color_pair(4))
@@ -102,28 +105,28 @@ def score_list():
     if os.path.isfile("highscore.csv"):
         with open("highscore.csv") as readfile:
             for line in readfile:
-                scores.append(int(line))
+                if line:
+                    hs_data = line.rstrip("\n").split(",")
+                    scores.append([hs_data[0], hs_data[1]])
     return scores
 
 
 def exp_score(score):
-    scores = []
+    hs = []
     if score_list():
-        scores = score_list()
-        print(score)
-        if len(scores) < 3:
-            scores.append(score)
-            scores.sort(reverse=True)
+        hs = score_list()
+        if len(hs) < 3:
+            hs.append(score)
         else:
-            if score > min(scores):
-                scores.remove(min(scores))
-                scores.append(score)
-                scores.sort(reverse=True)
+            if score[0] > int(hs[2][0]):
+                hs.pop(2)
+                hs.append(score)
     else:
-        scores.append(score)
+        hs.append(score)
+    hs.sort(key=lambda score: int(score[0]), reverse=True)
     with open("highscore.csv", "w+") as writefile:
-        for score in scores:
-            writefile.write(str(score)+"\n")
+        for score in hs:
+            writefile.write(str(score[0])+","+score[1]+"\n")
 
 
 def game_over(score):       # END SCREEN FOR 1-PLAYER MODE
@@ -139,10 +142,12 @@ def game_over(score):       # END SCREEN FOR 1-PLAYER MODE
     screen.refresh()
     sleep(3)
     screen.erase()
-    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6+str(score))
+    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6+str(score[0]))
+    if score[0] > int(score_list()[0][0]):
+        screen.addstr(curses.LINES // 2 - 2, (curses.COLS - len(gameover7)) // 2, gameover7)
     exp_score(score)
     screen.refresh()
-    sleep(2)
+    sleep(3)
     screen.erase()
 
 
