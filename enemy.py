@@ -149,14 +149,11 @@ def solo_start():       # INITIALISING ELEMENTS OF 1-PLAYER MODE
     while life > 0:     # CREATING BOXES TILL PLAYER DIES
         box_cloning()
     box_content.clear()
-    minute = str(datetime.datetime.now().minute)
-    if datetime.datetime.now().minute < 10:
-        minute = "0" + str(datetime.datetime.now().minute)
     date = (str(datetime.datetime.now().year)+"."
-            + str(datetime.datetime.now().month)+"."
-            + str(datetime.datetime.now().day)+"  "
-            + str(datetime.datetime.now().hour)+":"
-            + minute)
+            + str(datetime.datetime.now().month).zfill(2)+"."
+            + str(datetime.datetime.now().day).zfill(2)+"  "
+            + str(datetime.datetime.now().hour).zfill(2)+":"
+            + str(datetime.datetime.now().minute).zfill(2))
     return [score, date]
 
 
