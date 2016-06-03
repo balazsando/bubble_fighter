@@ -13,89 +13,67 @@ screen = curses.newwin(curses.LINES, curses.COLS, 0, 0)
 curses.noecho()
 curses.curs_set(0)
 screen.keypad(1)
-game_mode = 1
-welcome1 = "WELCOME TO RIDDLE FIGHTER 1.0"
-welcome2 = "        1 - PLAYER        "
-welcome3 = "2 - PLAYERS (beta version)"
-welcome4 = "        HIGH SCORE        "
-soloinf1 = "Destroy enemies falling from the sky by solving their riddles!    "
-soloinf2 = "Solve the math problem or enter the letter to make them disappear."
-soloinf3 = "      - POINTS are awarded for each enemy killed.                 "
-soloinf4 = "      - You lose LIFE if enemies reach the ground.                "
-multinf1 = "Fight againts another player and prove you have lightning reflexes"
-multinf2 = "Whoever pressing the correct button first will damage the opponent"
-multinf3 = "      - LIFE is taken from opponent for each score.               "
-multinf4 = "      - P1 use W, A, S, D letters, P2 use 8, 4, 5, 6 numbers      "
-highinf1 = "        TOP 3:         SCORE          DATE                        "
-exit_inf = "ESC to exit"
-gameover1 = "Traceback (most recent call last):                  "
-gameover2 = "      File \"python/bubble_fighter/welcome.py\", line 20, in <module>"
-gameover3 = "                                         sdfwefw"
-gameover4 = "                                 NameError: name 'sdfw"
-gameover5 = "Just jokin... you got REKT!"
-gameover6 = "Your score is: "
-gameover7 = "NEW HIGH SCORE - CONGRATS"
-playerwin1 = "What an intense fight... You both fought well!"
-playerwin2 = "And the winner is:"
-curses.init_pair(1, -1, 1)
+game_mode = 0
+title = "WELCOME TO RIDDLE FIGHTER 1.0"
+welcome = []
+welcome.append("        1 - PLAYER        ")
+welcome.append("2 - PLAYERS (beta version)")
+welcome.append("        HIGH SCORE        ")
+gameinf = [[], [], []]
+gameinf[0].append("Destroy enemies falling from the sky by solving their riddles!    ")
+gameinf[0].append("Solve the math problem or enter the letter to make them disappear.")
+gameinf[0].append("      - POINTS are awarded for each enemy killed.                 ")
+gameinf[0].append("      - You lose LIFE if enemies reach the ground.                ")
+gameinf[1].append("Fight againts another player and prove you have lightning reflexes")
+gameinf[1].append("Whoever pressing the correct button first will damage the opponent")
+gameinf[1].append("      - LIFE is taken from opponent for each score.               ")
+gameinf[1].append("      - P1 use W, A, S, D letters, P2 use 8, 4, 5, 6 numbers      ")
+gameinf[2].append("        TOP 3:         SCORE          DATE                        ")
+gameinf[2].extend([" "*len(gameinf[2][0])] * 3)
+exitinf = "ESC to exit"
+gameover = []
+gameover.append("Traceback (most recent call last):                  ")
+gameover.append("      File \"python/bubble_fighter/welcome.py\", line 20, in <module>")
+gameover.append("                                         sdfwefw")
+gameover.append("                                 NameError: name 'sdfw")
+gameover.append("Just jokin... you got REKT!")
+gameover.append("Your score is: ")
+gameover.append("NEW HIGH SCORE - CONGRATS")
+playerwin = []
+playerwin.append("What an intense fight... You both fought well!")
+playerwin.append("And the winner is:")
+playerwin.append("")
+curses.init_pair(1, 1, -1)
 curses.init_pair(2, -1, 3)
-curses.init_pair(3, 1, -1)
+curses.init_pair(3, -1, 1)
 curses.init_pair(4, 7, 0)
 
 
-def game_mode_1():          # GAME MODE 1 DESCRIPTION - 1 PLAYER
-    screen.addstr(curses.LINES // 2 - 5, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(2))
-    screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome3)) // 2, welcome3, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(welcome4)) // 2, welcome4, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(soloinf1)) // 2, soloinf1, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(soloinf2)) // 2, soloinf2, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(soloinf3)) // 2, soloinf3, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 7, (curses.COLS - len(soloinf4)) // 2, soloinf4, curses.color_pair(4))
-    global game_mode
-    game_mode = 1
-
-
-def game_mode_2():          # GAME MODE 2 DESCRIPTION - 2 PLAYERS
-    screen.addstr(curses.LINES // 2 - 5, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome3)) // 2, welcome3, curses.color_pair(2))
-    screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(welcome4)) // 2, welcome4, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(multinf1)) // 2, multinf1, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(multinf2)) // 2, multinf2, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(multinf3)) // 2, multinf3, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 7, (curses.COLS - len(multinf4)) // 2, multinf4, curses.color_pair(4))
-    global game_mode
-    game_mode = 2
-
-
-def high_score():
-    screen.addstr(curses.LINES // 2 - 5, (curses.COLS - len(welcome2)) // 2, welcome2, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 - 3, (curses.COLS - len(welcome3)) // 2, welcome3, curses.color_pair(3))
-    screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(welcome4)) // 2, welcome4, curses.color_pair(2))
-    scores_format = [" " * len(highinf1), " " * len(highinf1), " " * len(highinf1)]
-    if score_list():
-        scores = score_list()
-        for i in range(len(scores)):
-            scores_format[i] = str(" " * 23 + scores[i][0] +
-                                   " " * (15 - len(scores[i][0])) + scores[i][1] + " " * (28 - len(scores[i][1])))
-    screen.addstr(curses.LINES // 2 + 4, (curses.COLS - len(highinf1)) // 2, highinf1, curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 5, (curses.COLS - len(highinf1)) // 2, scores_format[0], curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 6, (curses.COLS - len(highinf1)) // 2, scores_format[1], curses.color_pair(4))
-    screen.addstr(curses.LINES // 2 + 7, (curses.COLS - len(highinf1)) // 2, scores_format[2], curses.color_pair(4))
-    global game_mode
-    game_mode = 3
+def game_menu():
+    if game_mode == 2:
+        if score_list():
+            scores = score_list()
+            for i in range(len(scores)):
+                if scores:
+                    gameinf[2][i+1] = (" "*23 + scores[i][0] + " "*(15-len(scores[i][0])) +
+                                       scores[i][1] + " "*(28-len(scores[i][1])))
+    screen.addstr(curses.LINES//2-7, (curses.COLS-len(title))//2, title, curses.color_pair(3))
+    screen.addstr(curses.LINES-2, curses.COLS-15, exitinf)
+    for i in range(len(welcome)):
+        screen.addstr(curses.LINES//2+(2*i-5), (curses.COLS-len(welcome[i]))//2, welcome[i],
+                      curses.color_pair((game_mode == i)+1))
+    for i in range(len(gameinf[game_mode])):
+        screen.addstr(curses.LINES//2+(4+i), (curses.COLS-len(gameinf[game_mode][i]))//2, gameinf[game_mode][i],
+                      curses.color_pair(4))
 
 
 def player_win(player):     # END SCREEN FOR 2-PLAYER MODE
     screen.erase()
-    screen.addstr(curses.LINES // 2 - 1, (curses.COLS - len(playerwin1)) // 2, playerwin1)
-    screen.refresh()
-    sleep(2)
-    screen.addstr(curses.LINES // 2, (curses.COLS - len(playerwin2)) // 2, playerwin2)
-    screen.refresh()
-    sleep(1)
-    screen.addstr(curses.LINES // 2+2, (curses.COLS - len(player)) // 2, player)
-    screen.refresh()
-    sleep(2)
+    playerwin[2] = player
+    for i in range(len(playerwin)):
+        screen.addstr(curses.LINES//2+2*(i-1), (curses.COLS-len(playerwin[i]))//2, playerwin[i])
+        screen.refresh()
+        sleep(2)
     screen.erase()
 
 
@@ -130,57 +108,42 @@ def exp_score(score):
 
 def game_over(score):       # END SCREEN FOR 1-PLAYER MODE
     screen.erase()
-    screen.addstr(curses.LINES // 3 - 1, curses.COLS // 2, gameover1)
-    screen.addstr(curses.LINES // 3, curses.COLS // 2, gameover2)
-    screen.addstr(curses.LINES // 3 + 1, curses.COLS // 2, gameover3)
-    screen.addstr(curses.LINES // 3 + 2, curses.COLS // 2, gameover4)
+    for i in range(4):
+        screen.addstr(curses.LINES//3+(i-1), curses.COLS//2, gameover[i])
     screen.refresh()
     sleep(2)
     screen.erase()
-    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover5)) // 2, gameover5)
+    screen.addstr(curses.LINES//2, (curses.COLS-len(gameover[4]))//2, gameover[4])
     screen.refresh()
     sleep(3)
     screen.erase()
-    screen.addstr(curses.LINES // 2, (curses.COLS - len(gameover6)) // 2, gameover6+str(score[0]))
+    screen.addstr(curses.LINES//2, (curses.COLS-len(gameover[5]))//2, gameover[5]+str(score[0]))
     if score_list():
         if score[0] > int(score_list()[0][0]):
-            screen.addstr(curses.LINES // 2 - 2, (curses.COLS - len(gameover7)) // 2, gameover7)
+            screen.addstr(curses.LINES//2-2, (curses.COLS-len(gameover[6]))//2, gameover[6])
     else:
-        screen.addstr(curses.LINES // 2 - 2, (curses.COLS - len(gameover7)) // 2, gameover7)
+        screen.addstr(curses.LINES//2-2, (curses.COLS-len(gameover[6]))//2, gameover[6])
     exp_score(score)
     screen.refresh()
     sleep(3)
     screen.erase()
 
 
-def game_info():        # IN-GAME MENU (GAME NAME, EXIT INFO)
-    screen.addstr(curses.LINES // 2 - 7, (curses.COLS - len(welcome1)) // 2, welcome1, curses.color_pair(1))
-    screen.addstr(curses.LINES - 2, curses.COLS - 15, exit_inf)
-
-
 def welcome_screen():   # GAME MODE SELECTION
-    game_mode_1()       # 1-PLAYER MODE DEFAULT UPON LAUNCHING GAME
+    global game_mode
     while True:
-        game_info()
+        game_menu()
         select = screen.getch()
-        if game_mode == 1 and select == KEY_DOWN:
-            game_mode_2()
-        elif game_mode == 2:
-            if select == KEY_UP:
-                game_mode_1()
-            elif select == KEY_DOWN:
-                high_score()
-        elif game_mode == 3 and select == KEY_UP:
-            game_mode_2()
-        if select == 10:
-            if game_mode == 1:
-                score = enemy.solo_start()
-                game_over(score)
-                game_mode_1()
-            elif game_mode == 2:
-                player = enemy.multi_start()
-                player_win(player)
-                game_mode_2()
+        if select == KEY_DOWN:
+            game_mode = (game_mode+1) % 3
+        elif select == KEY_UP:
+            game_mode = (game_mode+2) % 3
+        elif select == 10 and game_mode < 2:
+            result = enemy.start_game(game_mode)
+            if game_mode == 0:
+                game_over(result)
+            elif game_mode == 1:
+                player_win(result)
         elif select == 27:
             curses.endwin()
             break

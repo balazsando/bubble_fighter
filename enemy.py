@@ -138,38 +138,30 @@ def box_cloning():         # ADDING BOX DATA TO LIST
     box_move()
 
 
-def solo_start():       # INITIALISING ELEMENTS OF 1-PLAYER MODE
-    global multi
-    global life
-    global score
-    global box_content
-    multi = 0
-    life = 5
-    score = 0
-    while life > 0:     # CREATING BOXES TILL PLAYER DIES
-        box_cloning()
-    box_content.clear()
-    date = (str(datetime.datetime.now().year)+"."
-            + str(datetime.datetime.now().month).zfill(2)+"."
-            + str(datetime.datetime.now().day).zfill(2)+"  "
-            + str(datetime.datetime.now().hour).zfill(2)+":"
-            + str(datetime.datetime.now().minute).zfill(2))
-    return [score, date]
-
-
-def multi_start():      # INITIALISING ELEMENTS OF 2-PLAYER MODE
+def start_game(gm):
     global multi
     global life
     global life_2
-    multi = 1
-    life = 10
-    life_2 = 10
-    while life > 0 and life_2 > 0:      # CREATING BOXES TILL ONE PLAYER LOSES ALL LIFE
+    global score
+    multi = gm
+    life = (multi+1) * 5
+    life_2 = multi * 10
+    score = 0
+    while (not multi and life > 0) or (multi and life_2 > 0 and life > 0):     # CREATING BOXES TILL PLAYER DIES
         box_cloning()
     box_content.clear()
-    if life == life_2 == 0:             # EVALUATING WHO THE WINNER IS
-        return "No one. You have given up :("
-    elif life_2 == 0:
-        return "P 2"
+    if multi:
+        if life == life_2 == 0:             # EVALUATING WHO THE WINNER IS
+            result = "No one. You have given up :("
+        elif life_2 == 0:
+            result = "P 2"
+        else:
+            result = "P 1"
     else:
-        return "P 1"
+        date = (str(datetime.datetime.now().year)+"." +
+                str(datetime.datetime.now().month).zfill(2)+"." +
+                str(datetime.datetime.now().day).zfill(2)+"  " +
+                str(datetime.datetime.now().hour).zfill(2)+":" +
+                str(datetime.datetime.now().minute).zfill(2))
+        result = [score, date]
+    return result
