@@ -50,7 +50,7 @@ curses.init_pair(4, 7, 0)
 
 
 def game_menu():
-    if game_mode == 2:
+    if game_mode == 2:  # PUTTING TOGETHER HIGHSCORE FOR DISPLAY
         if score_list():
             scores = score_list()
             for i in range(len(scores)):
@@ -59,10 +59,10 @@ def game_menu():
                                        scores[i][1] + " "*(28-len(scores[i][1])))
     screen.addstr(curses.LINES//2-7, (curses.COLS-len(title))//2, title, curses.color_pair(3))
     screen.addstr(curses.LINES-2, curses.COLS-15, exitinf)
-    for i in range(len(welcome)):
+    for i in range(len(welcome)):   # DISPLAYING MENU
         screen.addstr(curses.LINES//2+(2*i-5), (curses.COLS-len(welcome[i]))//2, welcome[i],
                       curses.color_pair((game_mode == i)+1))
-    for i in range(len(gameinf[game_mode])):
+    for i in range(len(gameinf[game_mode])):    # DISPLAYING GAME MODE INFO
         screen.addstr(curses.LINES//2+(4+i), (curses.COLS-len(gameinf[game_mode][i]))//2, gameinf[game_mode][i],
                       curses.color_pair(4))
 
@@ -88,7 +88,7 @@ def score_list():
     return scores
 
 
-def exp_score(score):
+def exp_score(score):   # UPDATING HIGHSCORE IF PLAYER MAKE IT TO TOP 3
     hs = []
     if score_list():
         hs = score_list()
@@ -132,13 +132,13 @@ def game_over(score):       # END SCREEN FOR 1-PLAYER MODE
 def welcome_screen():   # GAME MODE SELECTION
     global game_mode
     while True:
-        game_menu()
+        game_menu()     # DISPLAYING MENU SCREEN
         select = screen.getch()
-        if select == KEY_DOWN:
+        if select == KEY_DOWN:       # MOVING DOWN IN MENU
             game_mode = (game_mode+1) % 3
-        elif select == KEY_UP:
+        elif select == KEY_UP:      # MOVING UP IN MENU
             game_mode = (game_mode+2) % 3
-        elif select == 10 and game_mode < 2:
+        elif select == 10 and game_mode < 2:    # STARTING THE GAME
             result = enemy.start_game(game_mode)
             if game_mode == 0:
                 game_over(result)
